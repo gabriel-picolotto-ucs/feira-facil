@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feira Fácil</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Fixo Verde -->
+        <header class="main-header">
+            <div class="user-profile">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span class="greeting">Olá, Usuário!</span>
+                    <span class="sub-greeting">O que vamos comprar hoje?</span>
+                </div>
+            </div>
+            <button class="icon-btn notification-btn">
+                <i class="fas fa-bell"></i>
+            </button>
+        </header>
+
+        <!-- TELA 1: INÍCIO -->
+        <main id="home-screen" class="screen active">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Buscar produtos, feiras ou tendas...">
+                <button class="filter-btn">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
+            </div>
+
+            <!-- Categorias -->
+            <section class="section-container">
+                <div class="section-header">
+                    <h3>Categorias</h3>
+                    <a href="#" class="see-all">Ver todas</a>
+                </div>
+                <div class="horizontal-scroll-list custom-scroll">
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-apple-alt"></i></div>
+                        <span>Frutas</span>
+                    </button>
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-leaf"></i></div>
+                        <span>Verduras</span>
+                    </button>
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-carrot"></i></div>
+                        <span>Legumes</span>
+                    </button>
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-cheese"></i></div>
+                        <span>Laticínios</span>
+                    </button>
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-bread-slice"></i></div>
+                        <span>Padaria</span>
+                    </button>
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-pepper-hot"></i></div>
+                        <span>Temperos</span>
+                    </button>
+                    <button class="category-card">
+                        <div class="category-icon"><i class="fas fa-seedling"></i></div>
+                        <span>Grãos</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Produtos em Destaque -->
+            <section class="section-container">
+                <div class="section-header">
+                    <h3>Produtos em Destaque</h3>
+                    <a href="#" class="see-all">Ver todos</a>
+                </div>
+                <div class="horizontal-scroll-list custom-scroll">
+                    <div class="product-card">
+                        <div class="product-image"><i class="fas fa-apple-alt"></i></div>
+                        <span class="product-stall"><i class="fas fa-store"></i> Tenda do Zé</span>
+                        <span class="product-name">Maçã Gala</span>
+                        <span class="product-price">R$ 7,90 <small>/kg</small></span>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image"><i class="fas fa-carrot"></i></div>
+                        <span class="product-stall"><i class="fas fa-store"></i> Legumes do Sítio</span>
+                        <span class="product-name">Cenoura Orgânica</span>
+                        <span class="product-price">R$ 5,50 <small>/kg</small></span>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image"><i class="fas fa-bread-slice"></i></div>
+                        <span class="product-stall"><i class="fas fa-store"></i> Padaria Seu João</span>
+                        <span class="product-name">Pão de Milho</span>
+                        <span class="product-price">R$ 12,00 <small>/un</small></span>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image"><i class="fas fa-cheese"></i></div>
+                        <span class="product-stall"><i class="fas fa-store"></i> Laticínios Colonial</span>
+                        <span class="product-name">Queijo Minas</span>
+                        <span class="product-price">R$ 28,00 <small>/kg</small></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Próximas Feiras -->
+            <section class="section-container">
+                <div class="section-header">
+                    <h3>Feiras Próximas</h3>
+                    <a href="#" class="see-all">Ver mapa</a>
+                </div>
+                <div class="fairs-list">
+                    <div class="fair-card fair-btn-card" onclick="openFairDetailScreen('Feira Agroecológica do Canteiro')">
+                        <div class="fair-card-header">
+                            <h4 class="fair-title">Feira Agroecológica do Canteiro</h4>
+                            <span class="day-badge">Sábado</span>
+                        </div>
+                        <div class="fair-card-body">
+                            <p><i class="fas fa-map-marker-alt"></i> Praça Central, Centro • A 1.2 km</p>
+                            <p><i class="fas fa-truck"></i> Entrega: R$ 4,80</p>
+                        </div>
+                    </div>
+
+                    <div class="fair-card fair-btn-card" onclick="openFairDetailScreen('Feira Orgânica do Bairro')">
+                        <div class="fair-card-header">
+                            <h4 class="fair-title">Feira Orgânica do Bairro</h4>
+                            <span class="day-badge">Sáb e Dom</span>
+                        </div>
+                        <div class="fair-card-body">
+                            <p><i class="fas fa-map-marker-alt"></i> Av. das Flores, 1200 • A 2.5 km</p>
+                            <p><i class="fas fa-truck"></i> Entrega: R$ 6,75</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- TELA 2: FEIRAS -->
+        <main id="fairs-screen" class="screen">
+            <div class="screen-title-bar">
+                <h2>Feiras Disponíveis</h2>
+            </div>
+
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Buscar por nome ou endereço...">
+                <button id="toggle-fairs-filter-btn" class="filter-btn">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
+            </div>
+
+            <!-- Filtros Expansíveis -->
+            <div id="fairs-dropdown-filter" class="filter-dropdown hidden">
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fas fa-route"></i> Distância Máxima</label>
+                    <div class="chips-container distance-chips">
+                        <button class="chip">Até 5 km</button>
+                        <button class="chip">Até 10 km</button>
+                        <button class="chip">Até 20 km</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fas fa-calendar-alt"></i> Dia da Semana</label>
+                    <div class="chips-container days-chips">
+                        <button class="chip">Seg</button>
+                        <button class="chip">Ter</button>
+                        <button class="chip">Qua</button>
+                        <button class="chip">Qui</button>
+                        <button class="chip">Sex</button>
+                        <button class="chip">Sáb</button>
+                        <button class="chip">Dom</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Feiras Completa -->
+            <div class="fairs-full-list">
+                <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('Feira Agroecológica do Canteiro')">
+                    <div class="fair-card-header">
+                        <h3 class="fair-title">Feira Agroecológica do Canteiro</h3>
+                        <span class="day-badge">Sábado</span>
+                    </div>
+                    <div class="fair-card-body">
+                        <p><i class="fas fa-map-marker-alt"></i> Praça Central, Centro • <strong>1.2 km</strong></p>
+                        <p><i class="fas fa-truck"></i> Entrega: <strong>R$ 4,80</strong></p>
+                    </div>
+                </div>
+
+                <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('Feira Orgânica do Bairro')">
+                    <div class="fair-card-header">
+                        <h3 class="fair-title">Feira Orgânica do Bairro</h3>
+                        <span class="day-badge">Sáb e Dom</span>
+                    </div>
+                    <div class="fair-card-body">
+                        <p><i class="fas fa-map-marker-alt"></i> Av. das Flores, 1200 • <strong>2.5 km</strong></p>
+                        <p><i class="fas fa-truck"></i> Entrega: <strong>R$ 6,75</strong></p>
+                    </div>
+                </div>
+
+                <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('Feira Livre São José')">
+                    <div class="fair-card-header">
+                        <h3 class="fair-title">Feira Livre São José</h3>
+                        <span class="day-badge">Domingo</span>
+                    </div>
+                    <div class="fair-card-body">
+                        <p><i class="fas fa-map-marker-alt"></i> Rua Dom Pedro II • <strong>3.8 km</strong></p>
+                        <p><i class="fas fa-truck"></i> Entrega: <strong>R$ 8,70</strong></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TELA 3: DETALHES DA FEIRA -->
+        <main id="fair-detail-screen" class="screen">
+            <div class="screen-title-bar-centered">
+                <button class="back-btn" onclick="backToFairs()"><i class="fas fa-arrow-left"></i></button>
+                <h2 id="selected-fair-title" class="centered-title">Nome da Feira</h2>
+                <div class="title-spacer"></div>
+            </div>
+
+            <!-- Abas do Topo: Produtos vs Tendas -->
+            <div class="fair-subtabs">
+                <button id="tab-btn-products" class="fair-tab-btn active" onclick="switchFairSubtab('products')">
+                    <i class="fas fa-shopping-basket"></i> Produtos
+                </button>
+                <button id="tab-btn-stalls" class="fair-tab-btn" onclick="switchFairSubtab('stalls')">
+                    <i class="fas fa-store"></i> Tendas
+                </button>
+            </div>
+
+            <!-- FILTRO DE CATEGORIAS (ABAIXO DAS ABAS) -->
+            <div id="fair-categories-filter" class="fair-categories-filter custom-scroll">
+                <button class="category-card fair-cat-chip active" onclick="filterProductsByCategory('Todos', this)">
+                    <div class="category-icon"><i class="fas fa-th-large"></i></div>
+                    <span>Todos</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Frutas', this)">
+                    <div class="category-icon"><i class="fas fa-apple-alt"></i></div>
+                    <span>Frutas</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Verduras', this)">
+                    <div class="category-icon"><i class="fas fa-leaf"></i></div>
+                    <span>Verduras</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Legumes', this)">
+                    <div class="category-icon"><i class="fas fa-carrot"></i></div>
+                    <span>Legumes</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Laticínios', this)">
+                    <div class="category-icon"><i class="fas fa-cheese"></i></div>
+                    <span>Laticínios</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Padaria', this)">
+                    <div class="category-icon"><i class="fas fa-bread-slice"></i></div>
+                    <span>Padaria</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Temperos', this)">
+                    <div class="category-icon"><i class="fas fa-pepper-hot"></i></div>
+                    <span>Temperos</span>
+                </button>
+                <button class="category-card fair-cat-chip" onclick="filterProductsByCategory('Grãos', this)">
+                    <div class="category-icon"><i class="fas fa-seedling"></i></div>
+                    <span>Grãos</span>
+                </button>
+            </div>
+
+            <!-- Conteúdo de Produtos -->
+            <div id="fair-products-container" class="stall-products-page-list"></div>
+
+            <!-- Conteúdo de Tendas -->
+            <div id="fair-stalls-container" class="stalls-list hidden"></div>
+        </main>
+
+        <!-- TELA 4: CARRINHO -->
+        <main id="cart-screen" class="screen">
+            <div class="screen-title-bar">
+                <h2>Meu Carrinho</h2>
+                <button class="btn-clear-cart" onclick="clearCart()"><i class="fas fa-trash-alt"></i> Limpar</button>
+            </div>
+
+            <div id="cart-items-container" class="cart-items-list"></div>
+
+            <div id="empty-cart-msg" class="empty-list">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Seu carrinho está vazio.</p>
+                <span>Navegue pelas feiras e tendas para adicionar produtos.</span>
+            </div>
+
+            <div id="cart-summary" class="cart-summary hidden">
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span id="subtotal-val">R$ 0,00</span>
+                </div>
+
+                <div id="freight-details-container" class="freight-breakdown-list"></div>
+
+                <div class="summary-line">
+                    <span>Frete Total</span>
+                    <span id="freight-total-val">R$ 0,00</span>
+                </div>
+
+                <div class="summary-line total">
+                    <span>Total</span>
+                    <span id="total-val">R$ 0,00</span>
+                </div>
+                <button class="btn-checkout" onclick="checkoutOrder()">Finalizar Pedido</button>
+            </div>
+        </main>
+
+        <!-- TELA 5: PAGAMENTO (CHECKOUT) -->
+        <main id="payment-screen" class="screen">
+            <div class="screen-title-bar-centered">
+                <button class="back-btn" onclick="backToCart()"><i class="fas fa-arrow-left"></i></button>
+                <h2 class="centered-title">Forma de Pagamento</h2>
+                <div class="title-spacer"></div>
+            </div>
+
+            <div class="checkout-container">
+                <div class="payment-options">
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="pix" checked>
+                        <div class="payment-card">
+                            <i class="fas fa-qrcode"></i>
+                            <div>
+                                <strong>Pix</strong>
+                                <p>Aprovação instantânea</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="card">
+                        <div class="payment-card">
+                            <i class="fas fa-credit-card"></i>
+                            <div>
+                                <strong>Cartão de Crédito / Débito</strong>
+                                <p>Pague na entrega ou pelo app</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="cash">
+                        <div class="payment-card">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div>
+                                <strong>Dinheiro</strong>
+                                <p>Pagamento na entrega</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="checkout-summary-box">
+                    <div class="summary-line total">
+                        <span>Total a Pagar:</span>
+                        <strong id="checkout-total-val" style="color: #2e7d32;">R$ 0,00</strong>
+                    </div>
+                </div>
+
+                <button class="btn-checkout" onclick="confirmPaymentAndOrder()">Confirmar e Finalizar</button>
+            </div>
+        </main>
+
+        <!-- TELA 6: PEDIDOS -->
+        <main id="orders-screen" class="screen">
+            <div class="screen-title-bar">
+                <h2>Meus Pedidos</h2>
+            </div>
+
+            <div class="orders-tabs">
+                <button class="order-tab-btn active" onclick="switchOrderTab('active')">Em Andamento</button>
+                <button class="order-tab-btn" onclick="switchOrderTab('history')">Histórico</button>
+            </div>
+
+            <div id="active-orders-container" class="orders-list"></div>
+            <div id="history-orders-container" class="orders-list hidden"></div>
+        </main>
+
+        <!-- POP-UP DE QUANTIDADE -->
+        <div id="quantity-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div>
+                        <h3 id="qty-modal-product-name">Nome do Produto</h3>
+                        <span id="qty-modal-stall-name" class="modal-stall-badge"><i class="fas fa-store"></i> Nome da Tenda</span>
+                        <div id="qty-modal-product-price" class="modal-subtitle">R$ 0,00 /kg</div>
+                    </div>
+                    <button id="close-qty-modal-btn" class="close-btn">×</button>
+                </div>
+                <form id="quantity-form">
+                    <div class="form-group">
+                        <label for="qty-amount-input">Quantidade</label>
+                        <input type="number" id="qty-amount-input" step="any" min="0.1" placeholder="Ex: 1 ou 500" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qty-unit-select">Unidade de Medida</label>
+                        <select id="qty-unit-select" class="custom-select">
+                            <option value="kg">Quilo (kg)</option>
+                            <option value="g">Gramas (g)</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-qty-modal-btn" class="btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn-primary-action">Adicionar ao Carrinho</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- TOAST / NOTIFICAÇÃO NATIVA DENTRO DO APP -->
+        <div id="toast-notification" class="toast-notification hidden">
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span id="toast-message">Notificação</span>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Verde -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-target="home-screen">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="#" class="nav-item" data-target="fairs-screen">
+                <i class="fas fa-store"></i>
+                <span>Feiras</span>
+            </a>
+            <a href="#" class="nav-item" data-target="cart-screen">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Carrinho</span>
+            </a>
+            <a href="#" class="nav-item" data-target="orders-screen">
+                <i class="fas fa-receipt"></i>
+                <span>Pedidos</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
