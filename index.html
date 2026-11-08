@@ -12,17 +12,18 @@
     <div class="app-container">
         <!-- Header Fixo Verde -->
         <header class="main-header">
-            <div class="user-profile">
+            <div class="user-profile" onclick="openProfileScreen()" style="cursor: pointer;">
                 <div class="avatar">
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="user-info">
-                    <span class="greeting">Olá, Usuário!</span>
+                    <span id="header-user-name" class="greeting">Olá, Usuário!</span>
                     <span class="sub-greeting">O que vamos comprar hoje?</span>
                 </div>
             </div>
-            <button class="icon-btn notification-btn">
+            <button class="icon-btn notification-btn" onclick="toggleNotificationsModal()">
                 <i class="fas fa-bell"></i>
+                <span id="notification-badge" class="badge-count">2</span>
             </button>
         </header>
 
@@ -31,78 +32,75 @@
             <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="Buscar produtos, feiras ou tendas...">
-                <button class="filter-btn">
-                    <i class="fas fa-sliders-h"></i>
-                </button>
             </div>
 
             <!-- Categorias -->
             <section class="section-container">
                 <div class="section-header">
                     <h3>Categorias</h3>
-                    <a href="#" class="see-all">Ver todas</a>
+                    <a href="#" class="see-all" onclick="selectHomeCategory('Todos')">Ver todas</a>
                 </div>
                 <div class="horizontal-scroll-list custom-scroll">
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Frutas')">
                         <div class="category-icon"><i class="fas fa-apple-alt"></i></div>
                         <span>Frutas</span>
                     </button>
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Verduras')">
                         <div class="category-icon"><i class="fas fa-leaf"></i></div>
                         <span>Verduras</span>
                     </button>
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Legumes')">
                         <div class="category-icon"><i class="fas fa-carrot"></i></div>
                         <span>Legumes</span>
                     </button>
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Laticínios')">
                         <div class="category-icon"><i class="fas fa-cheese"></i></div>
                         <span>Laticínios</span>
                     </button>
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Padaria')">
                         <div class="category-icon"><i class="fas fa-bread-slice"></i></div>
                         <span>Padaria</span>
                     </button>
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Temperos')">
                         <div class="category-icon"><i class="fas fa-pepper-hot"></i></div>
                         <span>Temperos</span>
                     </button>
-                    <button class="category-card">
+                    <button class="category-card" onclick="selectHomeCategory('Grãos')">
                         <div class="category-icon"><i class="fas fa-seedling"></i></div>
                         <span>Grãos</span>
                     </button>
                 </div>
             </section>
 
-            <!-- Produtos em Destaque -->
+            <!-- Produtos em Destaque (Abrem direto o Modal de Adicionar ao Carrinho) -->
             <section class="section-container">
                 <div class="section-header">
                     <h3>Produtos em Destaque</h3>
-                    <a href="#" class="see-all">Ver todos</a>
+                    <a href="#" class="see-all" onclick="selectHomeCategory('Todos')">Ver todos</a>
                 </div>
                 <div class="horizontal-scroll-list custom-scroll">
-                    <div class="product-card">
+                    <div class="product-card" onclick="openQuantityModal('Maçã Gala Orgânica', 7.90, 'Tenda do Zé das Frutas', 'fa-apple-alt', 'Frutas')" style="cursor: pointer;">
                         <div class="product-image"><i class="fas fa-apple-alt"></i></div>
                         <span class="product-stall"><i class="fas fa-store"></i> Tenda do Zé</span>
                         <span class="product-name">Maçã Gala</span>
                         <span class="product-price">R$ 7,90 <small>/kg</small></span>
                     </div>
 
-                    <div class="product-card">
+                    <div class="product-card" onclick="openQuantityModal('Tomate Italiano Orgânico', 8.30, 'Tenda Legumes do Sítio', 'fa-carrot', 'Legumes')" style="cursor: pointer;">
                         <div class="product-image"><i class="fas fa-carrot"></i></div>
                         <span class="product-stall"><i class="fas fa-store"></i> Legumes do Sítio</span>
                         <span class="product-name">Cenoura Orgânica</span>
                         <span class="product-price">R$ 5,50 <small>/kg</small></span>
                     </div>
 
-                    <div class="product-card">
+                    <div class="product-card" onclick="openQuantityModal('Pão de Milho Caseiro', 12.00, 'Padaria Artesanal Seu João', 'fa-bread-slice', 'Padaria')" style="cursor: pointer;">
                         <div class="product-image"><i class="fas fa-bread-slice"></i></div>
                         <span class="product-stall"><i class="fas fa-store"></i> Padaria Seu João</span>
                         <span class="product-name">Pão de Milho</span>
                         <span class="product-price">R$ 12,00 <small>/un</small></span>
                     </div>
 
-                    <div class="product-card">
+                    <div class="product-card" onclick="openQuantityModal('Queijo Minas Frescal', 28.00, 'Tenda Laticínios Colonial', 'fa-cheese', 'Laticínios')" style="cursor: pointer;">
                         <div class="product-image"><i class="fas fa-cheese"></i></div>
                         <span class="product-stall"><i class="fas fa-store"></i> Laticínios Colonial</span>
                         <span class="product-name">Queijo Minas</span>
@@ -135,8 +133,8 @@
                             <span class="day-badge">Sáb e Dom</span>
                         </div>
                         <div class="fair-card-body">
-                            <p><i class="fas fa-map-marker-alt"></i> Av. das Flores, 1200 • A 2.5 km</p>
-                            <p><i class="fas fa-truck"></i> Entrega: R$ 6,75</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Av. das Flores, 1200 • A 7.9 km</p>
+                            <p><i class="fas fa-truck"></i> Entrega: R$ 10,50</p>
                         </div>
                     </div>
                 </div>
@@ -151,7 +149,7 @@
 
             <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Buscar por nome ou endereço...">
+                <input type="text" id="fairs-search-input" placeholder="Buscar por nome ou endereço..." oninput="filterFairsList()">
                 <button id="toggle-fairs-filter-btn" class="filter-btn">
                     <i class="fas fa-sliders-h"></i>
                 </button>
@@ -162,61 +160,28 @@
                 <div class="filter-group">
                     <label class="filter-label"><i class="fas fa-route"></i> Distância Máxima</label>
                     <div class="chips-container distance-chips">
-                        <button class="chip">Até 5 km</button>
-                        <button class="chip">Até 10 km</button>
-                        <button class="chip">Até 20 km</button>
+                        <button class="chip distance-chip" onclick="toggleDistanceFilter(5, this)">Até 5 km</button>
+                        <button class="chip distance-chip" onclick="toggleDistanceFilter(10, this)">Até 10 km</button>
+                        <button class="chip distance-chip" onclick="toggleDistanceFilter(20, this)">Até 20 km</button>
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label class="filter-label"><i class="fas fa-calendar-alt"></i> Dia da Semana</label>
                     <div class="chips-container days-chips">
-                        <button class="chip">Seg</button>
-                        <button class="chip">Ter</button>
-                        <button class="chip">Qua</button>
-                        <button class="chip">Qui</button>
-                        <button class="chip">Sex</button>
-                        <button class="chip">Sáb</button>
-                        <button class="chip">Dom</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Seg', this)">Seg</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Ter', this)">Ter</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Qua', this)">Qua</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Qui', this)">Qui</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Sex', this)">Sex</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Sáb', this)">Sáb</button>
+                        <button class="chip day-chip" onclick="toggleDayFilter('Dom', this)">Dom</button>
                     </div>
                 </div>
             </div>
 
             <!-- Lista de Feiras Completa -->
-            <div class="fairs-full-list">
-                <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('Feira Agroecológica do Canteiro')">
-                    <div class="fair-card-header">
-                        <h3 class="fair-title">Feira Agroecológica do Canteiro</h3>
-                        <span class="day-badge">Sábado</span>
-                    </div>
-                    <div class="fair-card-body">
-                        <p><i class="fas fa-map-marker-alt"></i> Praça Central, Centro • <strong>1.2 km</strong></p>
-                        <p><i class="fas fa-truck"></i> Entrega: <strong>R$ 4,80</strong></p>
-                    </div>
-                </div>
-
-                <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('Feira Orgânica do Bairro')">
-                    <div class="fair-card-header">
-                        <h3 class="fair-title">Feira Orgânica do Bairro</h3>
-                        <span class="day-badge">Sáb e Dom</span>
-                    </div>
-                    <div class="fair-card-body">
-                        <p><i class="fas fa-map-marker-alt"></i> Av. das Flores, 1200 • <strong>2.5 km</strong></p>
-                        <p><i class="fas fa-truck"></i> Entrega: <strong>R$ 6,75</strong></p>
-                    </div>
-                </div>
-
-                <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('Feira Livre São José')">
-                    <div class="fair-card-header">
-                        <h3 class="fair-title">Feira Livre São José</h3>
-                        <span class="day-badge">Domingo</span>
-                    </div>
-                    <div class="fair-card-body">
-                        <p><i class="fas fa-map-marker-alt"></i> Rua Dom Pedro II • <strong>3.8 km</strong></p>
-                        <p><i class="fas fa-truck"></i> Entrega: <strong>R$ 8,70</strong></p>
-                    </div>
-                </div>
-            </div>
+            <div id="fairs-full-list" class="fairs-full-list"></div>
         </main>
 
         <!-- TELA 3: DETALHES DA FEIRA -->
@@ -237,7 +202,7 @@
                 </button>
             </div>
 
-            <!-- FILTRO DE CATEGORIAS (ABAIXO DAS ABAS) -->
+            <!-- FILTRO DE CATEGORIAS -->
             <div id="fair-categories-filter" class="fair-categories-filter custom-scroll">
                 <button class="category-card fair-cat-chip active" onclick="filterProductsByCategory('Todos', this)">
                     <div class="category-icon"><i class="fas fa-th-large"></i></div>
@@ -386,7 +351,65 @@
             <div id="history-orders-container" class="orders-list hidden"></div>
         </main>
 
-        <!-- POP-UP DE QUANTIDADE -->
+        <!-- TELA 7: PERFIL DO USUÁRIO -->
+        <main id="profile-screen" class="screen">
+            <div class="screen-title-bar-centered">
+                <button class="back-btn" onclick="closeProfileScreen()"><i class="fas fa-arrow-left"></i></button>
+                <h2 class="centered-title">Meu Perfil</h2>
+                <div class="title-spacer"></div>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-header-card">
+                    <div class="profile-avatar-large">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="profile-display-name">Usuário</h3>
+                    <p id="profile-display-email">usuario@email.com</p>
+                </div>
+
+                <form id="profile-form" onsubmit="saveUserProfile(event)">
+                    <div class="form-group">
+                        <label for="user-name-input"><i class="fas fa-user"></i> Nome Completo</label>
+                        <input type="text" id="user-name-input" value="Usuário" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-email-input"><i class="fas fa-envelope"></i> E-mail</label>
+                        <input type="email" id="user-email-input" value="usuario@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-phone-input"><i class="fas fa-phone"></i> Telefone / WhatsApp</label>
+                        <input type="text" id="user-phone-input" value="(54) 99999-8888" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-address-input"><i class="fas fa-map-marker-alt"></i> Endereço de Entrega</label>
+                        <input type="text" id="user-address-input" value="Rua das Flores, 123 - Centro" required>
+                    </div>
+
+                    <button type="submit" class="btn-checkout" style="margin-top: 15px;">Salvar Alterações</button>
+                </form>
+            </div>
+        </main>
+
+        <!-- MODAL / POP-UP DE NOTIFICAÇÕES -->
+        <div id="notifications-modal" class="modal-overlay hidden" onclick="closeNotificationsModalOnOutside(event)">
+            <div class="modal-card notification-modal-card">
+                <div class="modal-header">
+                    <div>
+                        <h3><i class="fas fa-bell" style="color: #2e7d32; margin-right: 6px;"></i> Notificações</h3>
+                        <span class="modal-subtitle">Atualizações dos seus pedidos</span>
+                    </div>
+                    <button class="close-btn" onclick="toggleNotificationsModal()">×</button>
+                </div>
+
+                <div id="notifications-list" class="notifications-list"></div>
+            </div>
+        </div>
+
+        <!-- POP-UP DE QUANTIDADE / TELA DE ADICIONAR AO CARRINHO -->
         <div id="quantity-modal" class="modal-overlay hidden">
             <div class="modal-card">
                 <div class="modal-header">
@@ -419,7 +442,7 @@
             </div>
         </div>
 
-        <!-- TOAST / NOTIFICAÇÃO NATIVA DENTRO DO APP -->
+        <!-- TOAST / NOTIFICAÇÃO NATIVA -->
         <div id="toast-notification" class="toast-notification hidden">
             <div class="toast-content">
                 <i class="fas fa-check-circle"></i>

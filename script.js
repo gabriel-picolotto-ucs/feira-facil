@@ -3,6 +3,36 @@ let selectedProductForCart = null;
 let currentFairName = 'Feira Agroecológica do Canteiro';
 let activeCategoryFilter = 'Todos';
 
+/* --- VARIÁVEIS DE FILTRO DAS FEIRAS --- */
+let selectedMaxDistance = null; // Ex: 5, 10, 20
+let selectedDay = null;         // Ex: 'Sáb', 'Dom', 'Seg'...
+
+let userProfileData = {
+    name: 'Usuário',
+    email: 'usuario@email.com',
+    phone: '(54) 99999-8888',
+    address: 'Rua das Flores, 123 - Centro'
+};
+
+let notificationsList = [
+    {
+        id: 1,
+        title: 'Pedido #1024 Entregue!',
+        time: 'Há 20 min',
+        desc: 'Seu pedido da Feira Agroecológica foi entregue com sucesso.',
+        icon: 'fa-check-circle',
+        color: '#2e7d32'
+    },
+    {
+        id: 2,
+        title: 'Pedido #1025 Aceito',
+        time: 'Há 1 hora',
+        desc: 'A Tenda do Zé das Frutas já separou seus produtos.',
+        icon: 'fa-box-open',
+        color: '#e65100'
+    }
+];
+
 let activeOrders = [];
 let historyOrders = [
     {
@@ -16,11 +46,69 @@ let historyOrders = [
     }
 ];
 
-/* ==================== BASE DE DADOS MEGA EXPANDIDA COM "TYPE" ==================== */
+/* ==================== BASE DE DADOS DE FEIRAS ==================== */
 const fairsDatabase = {
+    'Feira da Segunda Central': {
+        distanceKm: 1.8,
+        freightCost: 5.00,
+        address: 'Rua Principal, 50 - Centro',
+        days: ['Segunda', 'Seg'],
+        dayBadge: 'Segunda',
+        stalls: [
+            { name: 'Tenda do Zé das Frutas', desc: 'Frutas Orgânicas • Tenda nº 12' },
+            { name: 'Tenda Horta & Cia da Maria', desc: 'Verduras e Folhas • Tenda nº 05' }
+        ]
+    },
+    'Feira Terça das Hortaliças': {
+        distanceKm: 4.2,
+        freightCost: 7.50,
+        address: 'Praça das Flores, Bairro Verde',
+        days: ['Terça', 'Ter'],
+        dayBadge: 'Terça',
+        stalls: [
+            { name: 'Tenda Legumes do Sítio', desc: 'Legumes Diversos • Tenda nº 18' },
+            { name: 'Tenda das Ervas & Temperos', desc: 'Temperos Frescos e Medicinais • Tenda nº 09' }
+        ]
+    },
+    'Feira Agroecológica de Quarta': {
+        distanceKm: 8.5,
+        freightCost: 11.00,
+        address: 'Av. Brasil, 2500 - Jardim América',
+        days: ['Quarta', 'Qua'],
+        dayBadge: 'Quarta',
+        stalls: [
+            { name: 'Tenda Cogumelos do Vale', desc: 'Cogumelos Frescos • Tenda nº 14' },
+            { name: 'Tenda Laticínios Colonial', desc: 'Queijos, Requeijão e Leite • Tenda nº 08' }
+        ]
+    },
+    'Feira Livre Quinta Produtiva': {
+        distanceKm: 14.8,
+        freightCost: 16.50,
+        address: 'Rodovia dos Agricultores, Km 5',
+        days: ['Quinta', 'Qui'],
+        dayBadge: 'Quinta',
+        stalls: [
+            { name: 'Padaria Artesanal Seu João', desc: 'Pães, Cucas e Biscoitos • Tenda nº 03' },
+            { name: 'Tenda Empório dos Grãos', desc: 'Grãos, Cereais e Castanhas • Tenda nº 11' }
+        ]
+    },
+    'Feira das Artes & Sabores (Sexta)': {
+        distanceKm: 3.5,
+        freightCost: 6.00,
+        address: 'Parque das Águas, Centro',
+        days: ['Sexta', 'Sex'],
+        dayBadge: 'Sexta',
+        stalls: [
+            { name: 'Tenda Peixaria Beira-Mar', desc: 'Pescados e Frutos do Mar • Tenda nº 02' },
+            { name: 'Tenda Das Bebidas e Polpas', desc: 'Sucos Naturais e Polpas • Tenda nº 15' }
+        ]
+    },
     'Feira Agroecológica do Canteiro': {
         distanceKm: 1.2,
         freightCost: 4.80,
+        address: 'Praça Central, Centro',
+        days: ['Sábado', 'Sáb'],
+        dayBadge: 'Sábado',
         stalls: [
             { name: 'Tenda do Zé das Frutas', desc: 'Frutas Orgânicas • Tenda nº 12' },
             { name: 'Tenda Horta & Cia da Maria', desc: 'Verduras e Folhas • Tenda nº 05' },
@@ -29,8 +117,11 @@ const fairsDatabase = {
         ]
     },
     'Feira Orgânica do Bairro': {
-        distanceKm: 2.5,
-        freightCost: 6.75,
+        distanceKm: 7.9,
+        freightCost: 10.50,
+        address: 'Av. das Flores, 1200',
+        days: ['Sábado', 'Domingo', 'Sáb', 'Dom'],
+        dayBadge: 'Sáb e Dom',
         stalls: [
             { name: 'Tenda Legumes do Sítio', desc: 'Legumes Diversos • Tenda nº 18' },
             { name: 'Tenda Doces da Roça', desc: 'Doces Caseiros e Compotas • Tenda nº 22' },
@@ -39,20 +130,14 @@ const fairsDatabase = {
         ]
     },
     'Feira Livre São José': {
-        distanceKm: 3.8,
-        freightCost: 8.70,
+        distanceKm: 18.5,
+        freightCost: 19.80,
+        address: 'Rua Dom Pedro II, Bairro Distante',
+        days: ['Domingo', 'Dom'],
+        dayBadge: 'Domingo',
         stalls: [
             { name: 'Tenda Laticínios Colonial', desc: 'Queijos, Requeijão e Leite • Tenda nº 08' },
             { name: 'Padaria Artesanal Seu João', desc: 'Pães, Cucas e Biscoitos • Tenda nº 03' },
-            { name: 'Tenda Empório dos Grãos', desc: 'Grãos, Cereais e Castanhas • Tenda nº 11' }
-        ]
-    },
-    'Feira das Artes & Sabores': {
-        distanceKm: 4.5,
-        freightCost: 9.50,
-        stalls: [
-            { name: 'Tenda Peixaria Beira-Mar', desc: 'Pescados e Frutos do Mar • Tenda nº 02' },
-            { name: 'Tenda Das Bebidas e Polpas', desc: 'Sucos Naturais e Polpas • Tenda nº 15' },
             { name: 'Tenda do Milho & Derivados', desc: 'Pamonha, Curau e Milho Verde • Tenda nº 20' }
         ]
     }
@@ -70,9 +155,9 @@ const stallToFairMap = {
     'Tenda Laticínios Colonial': 'Feira Livre São José',
     'Padaria Artesanal Seu João': 'Feira Livre São José',
     'Tenda Empório dos Grãos': 'Feira Livre São José',
-    'Tenda Peixaria Beira-Mar': 'Feira das Artes & Sabores',
-    'Tenda Das Bebidas e Polpas': 'Feira das Artes & Sabores',
-    'Tenda do Milho & Derivados': 'Feira das Artes & Sabores'
+    'Tenda Peixaria Beira-Mar': 'Feira das Artes & Sabores (Sexta)',
+    'Tenda Das Bebidas e Polpas': 'Feira das Artes & Sabores (Sexta)',
+    'Tenda do Milho & Derivados': 'Feira Livre São José'
 };
 
 const stallProductsDatabase = {
@@ -82,127 +167,141 @@ const stallProductsDatabase = {
         { name: 'Limão Taiti', price: 4.20, icon: 'fa-lemon', type: 'Frutas' },
         { name: 'Mamão Papaia', price: 8.50, icon: 'fa-apple-alt', type: 'Frutas' },
         { name: 'Laranja Pera Doce', price: 4.80, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Morango Fresco Orgânico', price: 14.00, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Uva Niágara', price: 11.90, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Abacaxi Pérola', price: 8.00, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Manga Palmer Doce', price: 6.50, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Melancia Fatiada', price: 3.90, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Maracujá Azedo', price: 10.50, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Abacate Manteiga', price: 7.20, icon: 'fa-apple-alt', type: 'Frutas' },
-        { name: 'Goiaba Vermelha', price: 6.80, icon: 'fa-apple-alt', type: 'Frutas' }
+        { name: 'Morango Fresco Orgânico', price: 14.00, icon: 'fa-apple-alt', type: 'Frutas' }
     ],
     'Tenda Horta & Cia da Maria': [
         { name: 'Alface Crespa Fresca', price: 3.50, icon: 'fa-leaf', type: 'Verduras' },
         { name: 'Rúcula Orgânica', price: 4.00, icon: 'fa-leaf', type: 'Verduras' },
-        { name: 'Couve Manteiga', price: 3.80, icon: 'fa-leaf', type: 'Verduras' },
-        { name: 'Espinafre Orgânico', price: 4.50, icon: 'fa-leaf', type: 'Verduras' },
-        { name: 'Brócolis Ninja', price: 6.90, icon: 'fa-seedling', type: 'Verduras' },
-        { name: 'Repolho Roxo Orgânico', price: 4.20, icon: 'fa-leaf', type: 'Verduras' },
-        { name: 'Agrião de Água', price: 3.90, icon: 'fa-leaf', type: 'Verduras' },
-        { name: 'Acelga Fresca', price: 4.80, icon: 'fa-leaf', type: 'Verduras' },
-        { name: 'Couve-Flor Orgânica', price: 7.50, icon: 'fa-seedling', type: 'Verduras' },
-        { name: 'Almeirão Folha', price: 3.60, icon: 'fa-leaf', type: 'Verduras' }
+        { name: 'Couve Manteiga', price: 3.80, icon: 'fa-leaf', type: 'Verduras' }
     ],
     'Tenda das Ervas & Temperos': [
         { name: 'Alecrim Fresco', price: 3.00, icon: 'fa-seedling', type: 'Temperos' },
         { name: 'Manjericão Orgânico', price: 3.50, icon: 'fa-seedling', type: 'Temperos' },
-        { name: 'Salsinha e Cebolinha', price: 2.80, icon: 'fa-leaf', type: 'Temperos' },
-        { name: 'Alho Roxo Orgânico', price: 22.00, icon: 'fa-pepper-hot', type: 'Temperos' },
-        { name: 'Pimenta Dedo-de-Moça', price: 8.90, icon: 'fa-pepper-hot', type: 'Temperos' },
-        { name: 'Gengibre Fresco', price: 12.50, icon: 'fa-seedling', type: 'Temperos' },
-        { name: 'Coentro Fresco', price: 2.50, icon: 'fa-leaf', type: 'Temperos' },
-        { name: 'Orégano em Folha', price: 4.00, icon: 'fa-seedling', type: 'Temperos' },
-        { name: 'Hortelã Fresca', price: 3.20, icon: 'fa-leaf', type: 'Temperos' },
-        { name: 'Cebola Roxa Orgânica', price: 6.50, icon: 'fa-pepper-hot', type: 'Temperos' }
+        { name: 'Alho Roxo Orgânico', price: 22.00, icon: 'fa-pepper-hot', type: 'Temperos' }
     ],
     'Tenda Cogumelos do Vale': [
         { name: 'Cogumelo Shimeji Preto', price: 16.00, icon: 'fa-seedling', type: 'Legumes' },
-        { name: 'Cogumelo Paris Fresco', price: 14.50, icon: 'fa-seedling', type: 'Legumes' },
-        { name: 'Cogumelo Shiitake Orgânico', price: 19.80, icon: 'fa-seedling', type: 'Legumes' },
-        { name: 'Cogumelo Portobello', price: 18.00, icon: 'fa-seedling', type: 'Legumes' }
+        { name: 'Cogumelo Paris Fresco', price: 14.50, icon: 'fa-seedling', type: 'Legumes' }
     ],
     'Tenda Legumes do Sítio': [
         { name: 'Tomate Italiano Orgânico', price: 8.30, icon: 'fa-seedling', type: 'Legumes' },
         { name: 'Cenoura Fresca', price: 5.50, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Pimentão Verde', price: 6.80, icon: 'fa-pepper-hot', type: 'Legumes' },
-        { name: 'Abobrinha Italiana', price: 5.90, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Batata Doce Roxa', price: 4.80, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Beterraba Orgânica', price: 5.20, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Mandioca Descascada 1kg', price: 7.50, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Chuchu Crocante', price: 3.90, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Batata Inglesa Monalisa', price: 4.50, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Abóbora Cabotiá', price: 4.20, icon: 'fa-carrot', type: 'Legumes' },
-        { name: 'Berinjela Roxa', price: 5.80, icon: 'fa-carrot', type: 'Legumes' }
+        { name: 'Pimentão Verde', price: 6.80, icon: 'fa-pepper-hot', type: 'Legumes' }
     ],
     'Tenda Doces da Roça': [
         { name: 'Doce de Leite Caseiro', price: 18.00, icon: 'fa-cookie', type: 'Padaria' },
-        { name: 'Geleia de Morango', price: 16.50, icon: 'fa-jar', type: 'Padaria' },
-        { name: 'Compota de Figo', price: 19.00, icon: 'fa-jar', type: 'Padaria' },
-        { name: 'Cocada Cremosa 300g', price: 12.00, icon: 'fa-cookie', type: 'Padaria' },
-        { name: 'Biscoito Amanteigado Caseiro', price: 10.00, icon: 'fa-cookie', type: 'Padaria' }
+        { name: 'Geleia de Morango', price: 16.50, icon: 'fa-jar', type: 'Padaria' }
     ],
     'Tenda do Mel & Geleias Natural': [
-        { name: 'Mel Silvestre Puro 500g', price: 24.00, icon: 'fa-jar', type: 'Padaria' },
-        { name: 'Própolis Verde Gotas', price: 28.00, icon: 'fa-wine-bottle', type: 'Padaria' },
-        { name: 'Favos de Mel In Natura', price: 32.00, icon: 'fa-jar', type: 'Padaria' }
+        { name: 'Mel Silvestre Puro 500g', price: 24.00, icon: 'fa-jar', type: 'Padaria' }
     ],
     'Tenda do Pastel & Salgados': [
         { name: 'Pastel de Carne', price: 9.00, icon: 'fa-utensils', type: 'Padaria' },
-        { name: 'Pastel de Queijo', price: 9.00, icon: 'fa-utensils', type: 'Padaria' },
-        { name: 'Pastel de Frango com Catupiry', price: 9.50, icon: 'fa-utensils', type: 'Padaria' },
-        { name: 'Caldo de Cana 500ml', price: 7.00, icon: 'fa-wine-glass-alt', type: 'Padaria' },
-        { name: 'Empada de Palmito', price: 6.50, icon: 'fa-utensils', type: 'Padaria' },
-        { name: 'Coxinha de Frango', price: 7.00, icon: 'fa-utensils', type: 'Padaria' }
+        { name: 'Caldo de Cana 500ml', price: 7.00, icon: 'fa-wine-glass-alt', type: 'Padaria' }
     ],
     'Tenda Laticínios Colonial': [
         { name: 'Queijo Minas Frescal', price: 28.00, icon: 'fa-cheese', type: 'Laticínios' },
         { name: 'Queijo Colonial Curado', price: 34.00, icon: 'fa-cheese', type: 'Laticínios' },
-        { name: 'Requeijão Cremoso de Corte', price: 18.50, icon: 'fa-cheese', type: 'Laticínios' },
-        { name: 'Manteiga Caseira Colonial 200g', price: 12.00, icon: 'fa-cheese', type: 'Laticínios' },
-        { name: 'Iogurte Natural Garrafa 1L', price: 10.00, icon: 'fa-wine-bottle', type: 'Laticínios' },
-        { name: 'Queijo Coalho para Churrasco', price: 26.00, icon: 'fa-cheese', type: 'Laticínios' },
-        { name: 'Ricota Fresca de Vaca', price: 15.00, icon: 'fa-cheese', type: 'Laticínios' },
-        { name: 'Nata Colonial Potinho 300g', price: 11.00, icon: 'fa-cheese', type: 'Laticínios' }
+        { name: 'Requeijão Cremoso de Corte', price: 18.50, icon: 'fa-cheese', type: 'Laticínios' }
     ],
     'Padaria Artesanal Seu João': [
         { name: 'Pão de Milho Caseiro', price: 12.00, icon: 'fa-bread-slice', type: 'Padaria' },
-        { name: 'Bolo de Fubá com Goiabada', price: 15.00, icon: 'fa-birthday-cake', type: 'Padaria' },
-        { name: 'Cuca de Banana com Farofa', price: 16.00, icon: 'fa-birthday-cake', type: 'Padaria' },
-        { name: 'Pão Italiano de Fermentação Natural', price: 18.00, icon: 'fa-bread-slice', type: 'Padaria' },
-        { name: 'Biscoito de Polvilho Crocante', price: 8.50, icon: 'fa-cookie', type: 'Padaria' },
-        { name: 'Broa de Broa de Milho', price: 6.00, icon: 'fa-bread-slice', type: 'Padaria' },
-        { name: 'Pão Francês Artesanal (Dúzia)', price: 9.00, icon: 'fa-bread-slice', type: 'Padaria' }
+        { name: 'Bolo de Fubá com Goiabada', price: 15.00, icon: 'fa-birthday-cake', type: 'Padaria' }
     ],
     'Tenda Empório dos Grãos': [
         { name: 'Castanha-do-Pará Selecionada', price: 45.00, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Granola Artesanal sem Açúcar', price: 14.00, icon: 'fa-cookie', type: 'Grãos' },
-        { name: 'Aveia em Flocos Orgânica', price: 8.50, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Chia em Grãos 250g', price: 11.00, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Feijão Preto Orgânico 1kg', price: 9.50, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Feijão Carioca Novo 1kg', price: 8.90, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Arroz Integral Cateto 1kg', price: 10.50, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Lentilha Castanha 500g', price: 12.00, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Grão-de-Bico Selecionado', price: 13.50, icon: 'fa-seedling', type: 'Grãos' },
-        { name: 'Quinoa em Grãos Real 300g', price: 16.00, icon: 'fa-seedling', type: 'Grãos' }
+        { name: 'Granola Artesanal sem Açúcar', price: 14.00, icon: 'fa-cookie', type: 'Grãos' }
     ],
     'Tenda Peixaria Beira-Mar': [
-        { name: 'Filé de Tilápia Fresco 1kg', price: 38.00, icon: 'fa-fish', type: 'Legumes' },
-        { name: 'Camarão Cinza Limpo 500g', price: 42.00, icon: 'fa-fish', type: 'Legumes' },
-        { name: 'Posta de Cação', price: 29.90, icon: 'fa-fish', type: 'Legumes' }
+        { name: 'Filé de Tilápia Fresco 1kg', price: 38.00, icon: 'fa-fish', type: 'Legumes' }
     ],
     'Tenda Das Bebidas e Polpas': [
-        { name: 'Polpa de Acerola Natural 1kg', price: 14.00, icon: 'fa-wine-bottle', type: 'Frutas' },
-        { name: 'Suco de Laranja Integral 1L', price: 9.00, icon: 'fa-wine-bottle', type: 'Frutas' },
-        { name: 'Kombucha de Hibisco 350ml', price: 11.50, icon: 'fa-wine-bottle', type: 'Frutas' }
+        { name: 'Suco de Laranja Integral 1L', price: 9.00, icon: 'fa-wine-bottle', type: 'Frutas' }
     ],
     'Tenda do Milho & Derivados': [
-        { name: 'Milho Verde em Espiga (5 un)', price: 10.00, icon: 'fa-seedling', type: 'Legumes' },
-        { name: 'Pamonha Doce Caseira', price: 8.00, icon: 'fa-utensils', type: 'Padaria' },
-        { name: 'Curau de Milho Pote 250g', price: 7.50, icon: 'fa-cookie', type: 'Padaria' }
+        { name: 'Pamonha Doce Caseira', price: 8.00, icon: 'fa-utensils', type: 'Padaria' }
     ]
 };
 
-/* --- FUNÇÃO PARA SELECIONAR CATEGORIA NA TELA INÍCIO --- */
+/* --- LÓGICA DE FILTRAGEM DE FEIRAS --- */
+function toggleDistanceFilter(distance, btnElement) {
+    const chips = document.querySelectorAll('.distance-chip');
+    
+    if (selectedMaxDistance === distance) {
+        selectedMaxDistance = null;
+        btnElement.classList.remove('active');
+    } else {
+        selectedMaxDistance = distance;
+        chips.forEach(c => c.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+    
+    filterFairsList();
+}
+
+function toggleDayFilter(day, btnElement) {
+    const chips = document.querySelectorAll('.day-chip');
+    
+    if (selectedDay === day) {
+        selectedDay = null;
+        btnElement.classList.remove('active');
+    } else {
+        selectedDay = day;
+        chips.forEach(c => c.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+    
+    filterFairsList();
+}
+
+function filterFairsList() {
+    const searchInput = document.getElementById('fairs-search-input');
+    const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const container = document.getElementById('fairs-full-list');
+
+    if (!container) return;
+
+    const filteredFairs = Object.keys(fairsDatabase).filter(fairName => {
+        const fair = fairsDatabase[fairName];
+
+        const matchesSearch = fairName.toLowerCase().includes(searchTerm) || 
+                              fair.address.toLowerCase().includes(searchTerm);
+
+        const matchesDistance = selectedMaxDistance === null || fair.distanceKm <= selectedMaxDistance;
+
+        const matchesDay = selectedDay === null || fair.days.some(d => d.toLowerCase().includes(selectedDay.toLowerCase()));
+
+        return matchesSearch && matchesDistance && matchesDay;
+    });
+
+    if (filteredFairs.length === 0) {
+        container.innerHTML = `
+            <div class="empty-list" style="padding: 30px 0;">
+                <i class="fas fa-search-location"></i>
+                <p>Nenhuma feira encontrada com esses filtros.</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = filteredFairs.map(fairName => {
+        const fair = fairsDatabase[fairName];
+        return `
+            <div class="fair-detail-card fair-btn-card" onclick="openFairDetailScreen('${fairName}')">
+                <div class="fair-card-header">
+                    <h3 class="fair-title">${fairName}</h3>
+                    <span class="day-badge">${fair.dayBadge}</span>
+                </div>
+                <div class="fair-card-body">
+                    <p><i class="fas fa-map-marker-alt"></i> ${fair.address} • <strong>${fair.distanceKm} km</strong></p>
+                    <p><i class="fas fa-truck"></i> Entrega: <strong>R$ ${fair.freightCost.toFixed(2).replace('.', ',')}</strong></p>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/* --- FUNÇÃO PARA CATEGORIAS NA TELA INÍCIO --- */
 function selectHomeCategory(categoryName) {
     document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
     const fairsNavItem = document.querySelector('.bottom-nav [data-target="fairs-screen"]');
@@ -231,6 +330,86 @@ function selectHomeCategory(categoryName) {
     }
 
     filterProductsByCategory(categoryName);
+}
+
+/* --- FUNÇÕES DE PERFIL DE USUÁRIO --- */
+function openProfileScreen() {
+    document.getElementById('user-name-input').value = userProfileData.name;
+    document.getElementById('user-email-input').value = userProfileData.email;
+    document.getElementById('user-phone-input').value = userProfileData.phone;
+    document.getElementById('user-address-input').value = userProfileData.address;
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('profile-screen').classList.add('active');
+}
+
+function closeProfileScreen() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('home-screen').classList.add('active');
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
+    document.querySelector('.bottom-nav [data-target="home-screen"]').classList.add('active');
+}
+
+function saveUserProfile(event) {
+    event.preventDefault();
+    userProfileData.name = document.getElementById('user-name-input').value;
+    userProfileData.email = document.getElementById('user-email-input').value;
+    userProfileData.phone = document.getElementById('user-phone-input').value;
+    userProfileData.address = document.getElementById('user-address-input').value;
+
+    document.getElementById('header-user-name').textContent = `Olá, ${userProfileData.name}!`;
+    document.getElementById('profile-display-name').textContent = userProfileData.name;
+    document.getElementById('profile-display-email').textContent = userProfileData.email;
+
+    showToast("Perfil atualizado com sucesso!");
+}
+
+/* --- FUNÇÕES DO POP-UP DE NOTIFICAÇÕES --- */
+function toggleNotificationsModal() {
+    const modal = document.getElementById('notifications-modal');
+    if (modal.classList.contains('hidden')) {
+        renderNotificationsUI();
+        modal.classList.remove('hidden');
+    } else {
+        modal.classList.add('hidden');
+    }
+}
+
+function closeNotificationsModalOnOutside(e) {
+    if (e.target.id === 'notifications-modal') {
+        document.getElementById('notifications-modal').classList.add('hidden');
+    }
+}
+
+function renderNotificationsUI() {
+    const container = document.getElementById('notifications-list');
+    const badge = document.getElementById('notification-badge');
+
+    if (badge) {
+        badge.textContent = notificationsList.length;
+        if (notificationsList.length === 0) badge.classList.add('hidden');
+        else badge.classList.remove('hidden');
+    }
+
+    if (notificationsList.length === 0) {
+        container.innerHTML = `<div class="empty-list" style="padding: 20px 0;"><p>Nenhuma notificação por enquanto.</p></div>`;
+        return;
+    }
+
+    container.innerHTML = notificationsList.map(n => `
+        <div class="notification-item">
+            <div class="notification-icon" style="background-color: ${n.color}15; color: ${n.color};">
+                <i class="fas ${n.icon}"></i>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header-row">
+                    <strong>${n.title}</strong>
+                    <span class="notification-time">${n.time}</span>
+                </div>
+                <p>${n.desc}</p>
+            </div>
+        </div>
+    `).join('');
 }
 
 /* --- FUNÇÃO DE TOAST CUSTOMIZADO --- */
@@ -325,6 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderOrdersUI();
+    filterFairsList();
 });
 
 function openFairDetailScreen(fairName) {
@@ -493,6 +673,7 @@ function filterByStallProducts(stallName) {
     filterProductsByCategory(activeCategoryFilter, activeBtn);
 }
 
+/* --- FUNÇÃO PARA ABRIR O MODAL DE ADICIONAR AO CARRINHO --- */
 function openQuantityModal(name, price, stallName, icon, type) {
     const fairName = stallToFairMap[stallName] || currentFairName;
     selectedProductForCart = { name, price, stallName, fairName, icon, type };
@@ -619,16 +800,29 @@ function confirmPaymentAndOrder() {
         totalFreight += fairData.freightCost;
     });
 
+    const orderId = `#${Math.floor(1000 + Math.random() * 9000)}`;
+
     const newOrder = {
-        id: `#${Math.floor(1000 + Math.random() * 9000)}`,
+        id: orderId,
         date: 'Hoje às ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         total: subtotal + totalFreight,
         items: [...cart]
     };
 
     activeOrders.unshift(newOrder);
+
+    notificationsList.unshift({
+        id: Date.now(),
+        title: `Pedido ${orderId} Realizado!`,
+        time: 'Agora',
+        desc: 'Seu pedido foi recebido e está em preparação pelos feirantes.',
+        icon: 'fa-shopping-basket',
+        color: '#2e7d32'
+    });
+
     cart = [];
     updateCartUI();
+    renderNotificationsUI();
 
     document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
     document.querySelector('.bottom-nav [data-target="orders-screen"]').classList.add('active');
