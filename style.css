@@ -6,34 +6,41 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body {
+/* Trava a janela externa do navegador mobile */
+html, body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     background-color: #f4f6f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    overscroll-behavior: none;
 }
 
+/* Estrutura de App Nativo em 3 linhas: Topo fixo | Meio rolável | Base fixa */
 .app-container {
     width: 100%;
     max-width: 414px;
+    height: 100%;
+    margin: 0 auto;
     background-color: #ffffff;
-    min-height: 100vh;
-    padding-bottom: 85px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow-x: hidden;
 }
 
 /* Header Fixo Verde */
 .main-header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #2e7d32;
-    padding: 18px 20px;
-    margin-bottom: 18px;
+    padding: calc(18px + env(safe-area-inset-top, 0px)) 20px 18px 20px;
     color: #ffffff;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+    z-index: 30;
 }
 
 .user-profile {
@@ -101,10 +108,16 @@ body {
     border: 2px solid #2e7d32;
 }
 
-/* TELAS */
+/* TELAS (APENAS O MIOLO ROLA) */
 .screen {
     display: none;
-    padding: 0 16px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding: 18px 16px 24px 16px;
 }
 
 .screen.active {
@@ -719,7 +732,7 @@ body {
 
 /* POP-UP DE NOTIFICAÇÕES DE PEDIDO */
 .notification-modal-card {
-    max-height: 80vh;
+    max-height: 80dvh;
     display: flex;
     flex-direction: column;
 }
@@ -1061,7 +1074,7 @@ body {
 /* TOAST / MINI JANELINHA DE NOTIFICAÇÃO NATIVA */
 .toast-notification {
     position: fixed;
-    top: 20px;
+    top: calc(20px + env(safe-area-inset-top, 0px));
     left: 50%;
     transform: translateX(-50%);
     background-color: #1b5e20;
@@ -1094,10 +1107,7 @@ body {
 /* MODAIS */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
@@ -1205,20 +1215,17 @@ body {
 
 .hidden { display: none !important; }
 
-/* Bottom Nav */
+/* Bottom Nav (Rodapé Fixo na Base) */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: 100%;
-    max-width: 414px;
     background-color: #2e7d32;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    z-index: 1000;
+    padding-top: 10px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    z-index: 30;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .nav-item {
